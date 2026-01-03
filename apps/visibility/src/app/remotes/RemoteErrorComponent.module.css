@@ -1,0 +1,17 @@
+.container {
+    border: 1px solid #d32f2f;
+    background: #fdecea;
+    color: #b71c1c;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.title {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.message {
+    font-size: 0.9em;
+    margin-top: 4px;
+}

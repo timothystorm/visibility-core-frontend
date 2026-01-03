@@ -1,0 +1,16 @@
+{
+  "remotes": {
+    "status": {
+      "current": "http://localhost:4202/mount.mjs",
+      "next": "http://localhost:4202/mount.mjs"
+    },
+    "overview": {
+      "current": "http://localhost:4002/mount.mjs",
+      "next": "http://localhost:4002/mount.mjs"
+    },
+    "details": {
+      "current": "http://localhost:4003/mount.mjs",
+      "next": "http://localhost:4003/mount.mjs"
+    }
+  }
+}

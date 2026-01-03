@@ -16,6 +16,11 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"]
+    "jsx": "react-jsx",
+    "customConditions": ["@org/source"],
+    "baseUrl": ".",
+    "paths": {
+      "@fedex/context": ["packages/context/src/index.ts"]
+    }
   }
 }

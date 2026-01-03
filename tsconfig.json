@@ -2,5 +2,21 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./apps/visibility-e2e"
+    },
+    {
+      "path": "./apps/visibility"
+    },
+    {
+      "path": "./packages/context"
+    },
+    {
+      "path": "./apps/status-e2e"
+    },
+    {
+      "path": "./apps/status"
+    }
+  ]
 }
