@@ -24,7 +24,6 @@ let root: Root | null = null;
  *
  * @param el - The HTML element to mount the app into.
  * @param portalContext - The portal context to provide to the app.
- * @param options - Optional settings for mounting the app.
  */
 export function mount(el: HTMLElement, portalContext: PortalContext) {
   if (root) return;
