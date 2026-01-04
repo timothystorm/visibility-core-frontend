@@ -1,0 +1,85 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo "${YELLOW}🔍 Running pre-commit checks...${NC}"
+echo "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+# Determine baseline for affected calculation
+# Handle first commit case where HEAD~1 doesn't exist
+if git rev-parse HEAD~1 >/dev/null 2>&1; then
+  BASE="HEAD~1"
+  echo "${BLUE}📊 Baseline: HEAD~1 (comparing to last commit)${NC}"
+else
+  BASE="--all"
+  echo "${BLUE}📊 Baseline: --all (first commit detected)${NC}"
+fi
+
+# Check if there are any changes to process
+if ! git diff --cached --quiet; then
+  echo ""
+else
+  echo "${YELLOW}⚠️  No staged changes detected${NC}"
+  exit 0
+fi
+
+# Run lint on affected projects
+echo ""
+echo "${YELLOW}📝 Linting affected projects...${NC}"
+npx nx affected -t lint --base=$BASE
+LINT_EXIT=$?
+if [ $LINT_EXIT -ne 0 ]; then
+  echo ""
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo "${RED}❌ Lint failed!${NC}"
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo "${YELLOW}💡 To fix automatically: npm run lint:fix${NC}"
+  echo "${YELLOW}💡 To skip this check: git commit --no-verify${NC}"
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  exit 1
+fi
+
+# Run typecheck on affected projects
+echo ""
+echo "${YELLOW}🔎 Type checking affected projects...${NC}"
+npx nx affected -t typecheck --base=$BASE
+TYPECHECK_EXIT=$?
+if [ $TYPECHECK_EXIT -ne 0 ]; then
+  echo ""
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo "${RED}❌ Type check failed!${NC}"
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo "${YELLOW}💡 Fix type errors before committing${NC}"
+  echo "${YELLOW}💡 To skip this check: git commit --no-verify${NC}"
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  exit 1
+fi
+
+# Run tests on affected projects
+echo ""
+echo "${YELLOW}🧪 Testing affected projects...${NC}"
+npx nx affected -t test --base=$BASE
+TEST_EXIT=$?
+if [ $TEST_EXIT -ne 0 ]; then
+  echo ""
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo "${RED}❌ Tests failed!${NC}"
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo "${YELLOW}💡 Fix failing tests before committing${NC}"
+  echo "${YELLOW}💡 To skip this check: git commit --no-verify${NC}"
+  echo "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  exit 1
+fi
+
+echo ""
+echo "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo "${GREEN}✅ All pre-commit checks passed!${NC}"
+echo "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""

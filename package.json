@@ -5,7 +5,15 @@
   "scripts": {
     "build:shared": "BUILD_MODE=shared npx nx run-many -t build -p visibility status",
     "build:standalone": "BUILD_MODE=standalone npx nx run-many -t build -p visibility status",
-    "build:all": "npm run build:shared && npm run build:standalone"
+    "build:all": "npm run build:shared && npm run build:standalone",
+    "ci:precommit:all": "npx nx run-many -t lint typecheck test",
+    "nx:graph": "nx graph",
+    "nx:projects": "nx show projects",
+    "nx:remove-project": "npx nx generate @nx/workspace:remove --",
+    "setup": "npm install && nx reset",
+    "prepare": "husky",
+    "precommit": "npx nx affected -t lint typecheck test --base=HEAD~1",
+    "lint:fix": "npx nx affected -t lint --base=HEAD~1 --fix"
   },
   "private": true,
   "devDependencies": {
@@ -42,9 +50,11 @@
     "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "5.0.0",
+    "husky": "^9.1.7",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
+    "lint-staged": "^16.2.7",
     "nx": "22.3.1",
     "prettier": "^2.6.2",
     "swc-loader": "0.1.15",

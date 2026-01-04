@@ -14,5 +14,10 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "react": "^19.2.3"
+  },
+  "peerDependencies": {
+    "react": "^19.2.3"
+  }
 }

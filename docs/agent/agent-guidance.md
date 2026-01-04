@@ -965,6 +965,53 @@ import { loadCss, deriveCssUrl } from '@fedex/ui';
 - NO camelCase
 - NO PascalCase
 
+### 6. Pre-commit Hooks (ENFORCED)
+
+**All commits automatically trigger quality checks:**
+
+```bash
+npx nx affected -t lint typecheck test --base=HEAD~1
+```
+
+**What This Means:**
+- Lint errors block commits ❌
+- Type errors block commits ❌
+- Test failures block commits ❌
+- Only affected projects are checked ✅
+- Nx caching makes it fast ✅
+
+**Baseline:** Compares against `HEAD~1` (last commit). First commit uses `--all` automatically.
+
+**To Skip (Use Sparingly):**
+```bash
+git commit --no-verify -m "WIP: work in progress"
+```
+
+**Valid Reasons to Skip:**
+- WIP commits (will be fixed before PR)
+- Emergency hotfixes (fix in follow-up)
+- Never skip for regular development
+
+**When Hooks Fail:**
+```bash
+# Auto-fix lint issues
+npm run lint:fix
+
+# Run checks manually
+npm run precommit
+
+# Check what's affected
+npx nx affected:graph
+```
+
+**Performance:**
+- Small changes: ~10-15s
+- Medium changes: ~30-45s  
+- Large changes: ~60-120s
+- Subsequent runs faster (Nx cache)
+
+**See:** `docs/development.md` for complete troubleshooting guide.
+
 ---
 
 ## Nx Workflow
@@ -1016,6 +1063,13 @@ npx nx run-many -t lint
 
 # Lint specific project
 npx nx lint visibility
+```
+
+#### Pre-commit Hooks (Enforced)
+
+**All commits trigger:**
+```bash
+npx nx affected -t lint typecheck test --base=HEAD~1
 ```
 
 #### Dependency Graph
