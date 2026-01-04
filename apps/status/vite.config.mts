@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
 
 const hostSetup = {
   port: 4202,
@@ -10,7 +9,11 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/apps/status', //path to Vite's cache directory
   server: hostSetup, // dev server options
   preview: hostSetup, // preview server options
-  plugins: [react()], // Vite plugins to use; react() enables JSX transform, Fast Refresh/HMR and React-specific optimizations
+
+  esbuild: {
+    jsx: 'automatic', // uses the new React automatic JSX runtime. JSX is compiled to calls like jsx/jsxs instead of
+    jsxImportSource: 'react', // tells the automatic runtime where to import the helper functions from (e.g., react/jsx-runtime)
+  },
 
   define: {
     // compile-time replacements injected into the bundle (e.g., process.env.NODE_ENV)
@@ -25,6 +28,7 @@ export default defineConfig({
   },
 
   build: {
+    cssCodeSplit: false, // Inline CSS into JS for module federation - CSS will be injected when the module loads
     target: 'esnext', // compilation target for output (esnext = modern browsers / native ES features).
     outDir: '../../dist/apps/status', //output directory for the build
     emptyOutDir: true, // clear outDir before building.
@@ -34,14 +38,14 @@ export default defineConfig({
     },
 
     lib: {
-      entry: './src/app/mount.tsx', // library entry file
+      entry: './src/status.tsx', // library entry file
       formats: ['es'], // output formats (['es'] = ES module build).
-      fileName: () => 'mount.mjs', // function that determines emitted file name
+      fileName: () => 'status.mjs', // function that determines emitted file name
     },
 
     rollupOptions: {
       //List of modules to treat as external (won't be bundled): React and related runtimes.
-      external: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client', 'scheduler'],
+      external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'scheduler'],
       output: { format: 'es' }, //final bundle format (es).
     },
   },

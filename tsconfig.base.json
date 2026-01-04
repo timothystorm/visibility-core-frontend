@@ -20,7 +20,8 @@
     "customConditions": ["@org/source"],
     "baseUrl": ".",
     "paths": {
-      "@fedex/context": ["packages/context/src/index.ts"]
+      "@fedex/context": ["packages/context/src/index.ts"],
+      "@fedex/ui": ["packages/ui/src/index.ts"]
     }
   }
 }

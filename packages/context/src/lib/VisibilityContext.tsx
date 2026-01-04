@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, useContext } from 'react';
-import { VisibilityContext } from './types/context.js';
+import { VisibilityContext } from './context.js';
 
 /**
  * VisibilityCtx - React context for VisibilityContext.
@@ -32,7 +32,6 @@ export function VisibilityContextProvider({
   value: VisibilityContext;
   children: React.ReactNode;
 }) {
-  console.log('....')
   return <VisibilityCtx.Provider value={value}>{children}</VisibilityCtx.Provider>;
 }
 

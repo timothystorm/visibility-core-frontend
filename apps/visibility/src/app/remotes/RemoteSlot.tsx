@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { loadRemote } from './loadRemotes';
 import { loadRemoteManifest } from './loadManifest';
 import { RemoteError } from './remoteError';
-import RemoteErrorComponent from './RemoteErrorComponent';
+import { useVisibilityContext } from '@fedex/context';
+import RemoteErrorComponent from '../components/RemoteErrorComponent';
 
 type SlotState = { status: 'loading' } | { status: 'mounted' } | { status: 'error'; error: RemoteError };
 
@@ -12,6 +13,7 @@ type SlotState = { status: 'loading' } | { status: 'mounted' } | { status: 'erro
  * @param remoteName - The name of the remote module to load. Refers to the key in the remotes.manifest.json file.
  */
 export function RemoteSlot({ remoteName }: { remoteName: string }) {
+  const visibilityContext = useVisibilityContext();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<SlotState>({ status: 'loading' });
 
@@ -30,7 +32,7 @@ export function RemoteSlot({ remoteName }: { remoteName: string }) {
         const mod = await loadRemote(remoteName, manifest);
         if (cancelled) return;
 
-        mod.mount(el);
+        mod.mount(el, visibilityContext);
         cleanup = () => mod.unmount?.(el);
 
         setState({ status: 'mounted' });
@@ -53,7 +55,7 @@ export function RemoteSlot({ remoteName }: { remoteName: string }) {
       cleanup?.();
       el.remove();
     };
-  }, [remoteName]);
+  }, [visibilityContext, remoteName]);
 
   if (state.status === 'error') {
     return <RemoteErrorComponent remote={remoteName} error={state.error} />;

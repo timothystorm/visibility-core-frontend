@@ -1,4 +1,4 @@
-import { mount } from './app/mount';
+import { mount } from './status';
 import { VisibilityContext } from '@fedex/context';
 
 /**
@@ -22,6 +22,6 @@ if (import.meta.env.DEV && window === window.top) {
       rollout: 'current',
     };
 
-    mount(el, visibilityContext);
+    await mount(el, visibilityContext);
   }
 }

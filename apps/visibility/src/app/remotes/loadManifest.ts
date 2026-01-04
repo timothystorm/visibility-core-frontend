@@ -12,7 +12,7 @@ const manifestUrl = '/remotes.manifest.json';
 export async function loadRemoteManifest(): Promise<RemoteManifest> {
   if (cachedManifest) return cachedManifest;
 
-  const res = await fetch(manifestUrl);
+  const res = await fetch(new URL(manifestUrl, import.meta.url));
   if (!res.ok) throw new Error(`Failed to load remote manifest (${res.status})`);
   const json = (await res.json()) as RemoteManifest;
 

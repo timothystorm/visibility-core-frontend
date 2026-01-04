@@ -1,5 +1,5 @@
 export type RemoteError = {
-  stage: 'manifest' | 'load' | 'mount';
+  stage: 'manifest' | 'load' | 'visibilityMount';
   message: string;
   cause?: unknown;
 };

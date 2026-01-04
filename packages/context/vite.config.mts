@@ -21,8 +21,8 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      // External packages that should not be bundled into your library.
-      external: [],
+      //List of modules to treat as external (won't be bundled): React and related runtimes.
+      external: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client', 'scheduler'],
     },
   },
   test: {

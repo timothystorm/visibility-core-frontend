@@ -1,0 +1,6 @@
+@import "./app/components/RemoteErrorComponent.module.css";
+
+:root {
+    --visibility-loaded: true;
+}
+

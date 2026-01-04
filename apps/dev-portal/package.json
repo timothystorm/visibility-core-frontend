@@ -1,0 +1,29 @@
+{
+  "name": "@fedex/dev-portal",
+  "projectType": "application",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "preview": {
+        "executor": "@nx/web:file-server",
+        "options": {
+          "staticFilePath": "apps/dev-portal/src",
+          "port": 4200,
+          "watch": false
+        }
+      },
+      "preview:all": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "nx preview @fedex/dev-portal",
+            "nx preview @fedex/visibility",
+            "nx preview @fedex/status"
+          ],
+          "parallel": true
+        }
+      }
+    }
+  }
+}

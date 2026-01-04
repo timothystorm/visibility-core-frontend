@@ -4,8 +4,7 @@ import { lazy, Suspense } from 'react';
 const LazyRemoteSlot = lazy(() => import('./remotes/RemoteSlot').then((m) => ({ default: m.RemoteSlot })));
 
 /**
- * The main application component that displays portal and visibility contexts
- * and loads all remote slot components.
+ * The main application component that displays portal and loads all remote slot components.
  * @constructor
  */
 export function App() {
@@ -14,13 +13,12 @@ export function App() {
   return (
     <>
       <h1>Visibility Host</h1>
-      <Suspense fallback={<div>Loading remote...</div>}>
-        <LazyRemoteSlot remoteName="status"></LazyRemoteSlot>
-      </Suspense>
-
-      <pre style={{fontSize: 'x-small', color: 'lightgrey'}}>
+      <pre style={{ fontSize: 'x-small', color: 'lightgrey' }}>
         visibilityContext: <code>{JSON.stringify(visibilityContext)}</code>
       </pre>
+      <Suspense fallback={<div>Loading remote (./status)...</div>}>
+        <LazyRemoteSlot remoteName="status"></LazyRemoteSlot>
+      </Suspense>
     </>
   );
 }

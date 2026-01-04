@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
 
 const hostSetup = {
   port: 4201,
@@ -10,7 +9,11 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/apps/visibility', //path to Vite's cache directory
   server: hostSetup, // dev server options
   preview: hostSetup, // preview server options
-  plugins: [react()], // Vite plugins to use; react() enables JSX transform, Fast Refresh/HMR and React-specific optimizations
+
+  esbuild: {
+    jsx: 'automatic', // uses the new React automatic JSX runtime. JSX is compiled to calls like jsx/jsxs instead of
+    jsxImportSource: 'react', // tells the automatic runtime where to import the helper functions from (e.g., react/jsx-runtime)
+  },
 
   define: {
     // compile-time replacements injected into the bundle (e.g., process.env.NODE_ENV)
@@ -21,10 +24,11 @@ export default defineConfig({
 
   resolve: {
     // ensures these packages (React and related runtimes) are deduplicated so only one copy is resolved/imported, avoiding duplicate-React issues.
-    dedupe: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client', 'scheduler'],
+    dedupe: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'scheduler'],
   },
 
   build: {
+    cssCodeSplit: false, // Inline CSS into JS for module federation - CSS will be injected when the module loads
     target: 'esnext', // compilation target for output (esnext = modern browsers / native ES features).
     outDir: '../../dist/apps/visibility', //output directory for the build
     emptyOutDir: true, // clear outDir before building.
@@ -34,9 +38,9 @@ export default defineConfig({
     },
 
     lib: {
-      entry: './src/app/mount.tsx', // library entry file
+      entry: './src/visibility.tsx', // library entry file
       formats: ['es'], // output formats (['es'] = ES module build).
-      fileName: () => 'mount.mjs', // function that determines emitted file name
+      fileName: () => 'visibility.mjs', // function that determines emitted file name
     },
 
     rollupOptions: {
