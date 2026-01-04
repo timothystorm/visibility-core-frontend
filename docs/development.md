@@ -1334,7 +1334,7 @@ npx nx affected -t lint typecheck     # Affected checks
 npx nx build {app}                    # Build
 BUILD_MODE=shared npx nx build {app}  # Shared mode
 BUILD_MODE=standalone npx nx build {app}  # Standalone
-npm run build:all                     # Both modes
+npm run ci:build:all                     # Both modes
 ```
 
 ### Git

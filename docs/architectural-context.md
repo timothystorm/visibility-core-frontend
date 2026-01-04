@@ -308,7 +308,7 @@ npx nx serve status        # Port 4202
 
 ### Production - Shared Mode (Recommended)
 ```bash
-npm run build:shared
+npm run ci:build:shared
 ```
 **Output:**
 - `dist/apps/visibility/` - Domain shell (~6KB)
@@ -317,7 +317,7 @@ npm run build:shared
 
 ### Production - Standalone Mode (Fallback)
 ```bash
-npm run build:standalone
+npm run ci:build:standalone
 ```
 **Output:**
 - `dist/apps/visibility-standalone/` - With React (~318KB)
@@ -326,7 +326,7 @@ npm run build:standalone
 
 ### Production - Both
 ```bash
-npm run build:all
+npm run ci:build:all
 ```
 Builds both modes for deployment flexibility.
 

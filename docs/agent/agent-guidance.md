@@ -411,7 +411,7 @@ BUILD_MODE=shared npx nx build visibility    // → ~6KB
 BUILD_MODE=standalone npx nx build visibility // → ~318KB
 
 // Production: Build both
-npm run build:all
+npm run ci:build:all
 ```
 
 ### Testing Patterns
@@ -1032,9 +1032,9 @@ npx nx build visibility
 npx nx build status
 
 # Build both modes
-npm run build:shared       # React external
-npm run build:standalone   # React bundled
-npm run build:all          # Both modes
+npm run ci:build:shared       # React external
+npm run ci:build:standalone   # React bundled
+npm run ci:build:all          # Both modes
 ```
 
 #### Testing
@@ -1235,9 +1235,9 @@ Shared Libraries
 
 ### Build Commands
 ```bash
-npm run build:shared       # Production (React external)
-npm run build:standalone   # Fallback (React bundled)
-npm run build:all          # Both modes
+npm run ci:build:shared       # Production (React external)
+npm run ci:build:standalone   # Fallback (React bundled)
+npm run ci:build:all          # Both modes
 ```
 
 ### Test Commands

@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:shared": "BUILD_MODE=shared npx nx run-many -t build -p visibility status",
-    "build:standalone": "BUILD_MODE=standalone npx nx run-many -t build -p visibility status",
-    "build:all": "npm run build:shared && npm run build:standalone",
+    "ci:build:shared": "BUILD_MODE=shared npx nx run-many -t build -p visibility status",
+    "ci:build:standalone": "BUILD_MODE=standalone npx nx run-many -t build -p visibility status",
+    "ci:build:all": "npm run ci:build:shared && npm run ci:build:standalone",
     "ci:precommit:all": "npx nx run-many -t lint typecheck test",
     "nx:graph": "nx graph",
     "nx:projects": "nx show projects",
