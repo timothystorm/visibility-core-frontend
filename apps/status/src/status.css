@@ -4,3 +4,7 @@
 :root {
     --status-loaded: true;
 }
+
+.status_header {
+    color: darkorange;
+}

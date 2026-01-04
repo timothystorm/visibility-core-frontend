@@ -2,7 +2,11 @@
   "name": "@fedex/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:shared": "BUILD_MODE=shared npx nx run-many -t build -p visibility status",
+    "build:standalone": "BUILD_MODE=standalone npx nx run-many -t build -p visibility status",
+    "build:all": "npm run build:shared && npm run build:standalone"
+  },
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",

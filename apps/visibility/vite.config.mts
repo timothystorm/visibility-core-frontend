@@ -4,6 +4,10 @@ const hostSetup = {
   port: 4201,
   host: 'localhost',
 };
+
+// Determine build mode: 'shared' (React externalized) or 'standalone' (React bundled)
+const buildMode = (process.env.BUILD_MODE || 'shared') as 'shared' | 'standalone';
+
 export default defineConfig({
   root: import.meta.dirname, // sets Vite project root
   cacheDir: '../../node_modules/.vite/apps/visibility', //path to Vite's cache directory
@@ -30,7 +34,9 @@ export default defineConfig({
   build: {
     cssCodeSplit: false, // Inline CSS into JS for module federation - CSS will be injected when the module loads
     target: 'esnext', // compilation target for output (esnext = modern browsers / native ES features).
-    outDir: '../../dist/apps/visibility', //output directory for the build
+    outDir: buildMode === 'standalone'
+      ? '../../dist/apps/visibility-standalone'
+      : '../../dist/apps/visibility', //output directory for the build
     emptyOutDir: true, // clear outDir before building.
     reportCompressedSize: true, // report gzipped/compressed sizes in the build output.
     commonjsOptions: {
@@ -44,8 +50,11 @@ export default defineConfig({
     },
 
     rollupOptions: {
-      //List of modules to treat as external (won't be bundled): React and related runtimes.
-      external: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client', 'scheduler'],
+      // In 'shared' mode: externalize React (portal provides it)
+      // In 'standalone' mode: bundle React into the module
+      external: buildMode === 'shared'
+        ? ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client', 'scheduler']
+        : [],
       output: { format: 'es' }, //final bundle format (es).
     },
   },

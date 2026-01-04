@@ -12,7 +12,7 @@ export function App() {
 
   return (
     <>
-      <h1>Visibility Host</h1>
+      <h1 className="vis_header">Visibility Host</h1>
       <pre style={{ fontSize: 'x-small', color: 'lightgrey' }}>
         visibilityContext: <code>{JSON.stringify(visibilityContext)}</code>
       </pre>

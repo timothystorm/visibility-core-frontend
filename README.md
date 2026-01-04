@@ -16,15 +16,15 @@ This is a **React-based module federation system** with:
 
 **New developers start here:**
 
-1. **[ARCHITECTURAL_REVIEW.md](./ARCHITECTURAL_REVIEW.md)** ⭐ - Comprehensive architectural assessment (8/10 score)
-2. **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Step-by-step improvement plan
-3. **[QUICK_WINS.md](./QUICK_WINS.md)** - 8 improvements you can implement today (~2 hours)
-4. **[DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)** - Complete documentation guide
+1. **[ARCHITECTURAL_REVALIDATION.md](./ARCHITECTURAL_REVALIDATION.md)** ⭐ LATEST - Current score: 8.5/10
+2. **[DUAL_BUILD_STRATEGY.md](./DUAL_BUILD_STRATEGY.md)** 🆕 - Shared vs Standalone builds
+3. **[ARCHITECTURAL_REVIEW.md](./ARCHITECTURAL_REVIEW.md)** - Original comprehensive assessment
+4. **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Step-by-step improvement plan
 
 **Quick references:**
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Visual diagrams and flows
-- [QUICK_REFERENCE.md](./QUICK_REFERENCE.md) - API reference
-- [PRODUCTION_DEPLOYMENT_SUMMARY.md](./PRODUCTION_DEPLOYMENT_SUMMARY.md) - Deployment strategies
+- [DUAL_BUILD_QUICK_REFERENCE.md](./DUAL_BUILD_QUICK_REFERENCE.md) 🆕 - Build commands and sizes
+- [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) - What's implemented
+- [QUICK_WINS.md](./QUICK_WINS.md) - Improvement checklist
 
 ## 🚀 Quick Start
 
@@ -40,13 +40,36 @@ npx nx serve status
 Visit http://localhost:4201 to see the visibility shell loading the status remote.
 
 ### Building
-```bash
-# Build all projects
-npx nx run-many -t build
 
-# Build specific project
-npx nx build visibility
+#### Shared Mode (Default - React Externalized)
+```bash
+# Build for portal deployment (React provided by portal)
+npm run build:shared
+
+# Or build specific project
+BUILD_MODE=shared npx nx build visibility
 ```
+
+**Output:** `dist/apps/visibility/` (~6KB) - React is external
+
+#### Standalone Mode (React Bundled)
+```bash
+# Build self-contained modules (React included)
+npm run build:standalone
+
+# Or build specific project
+BUILD_MODE=standalone npx nx build visibility
+```
+
+**Output:** `dist/apps/visibility-standalone/` (~318KB) - React is bundled
+
+#### Build Both Versions
+```bash
+# For production deployment
+npm run build:all
+```
+
+**See:** [DUAL_BUILD_STRATEGY.md](./DUAL_BUILD_STRATEGY.md) for complete details
 
 ### Testing
 ```bash
