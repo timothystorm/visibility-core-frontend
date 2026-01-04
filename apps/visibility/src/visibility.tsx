@@ -5,7 +5,7 @@ import './visibility.css';
 import { deriveCssUrl, loadCss } from '@fedex/ui';
 
 // Keep track of the root to allow unmounting later
-let root: Root | null = null;
+const rootRegistry = new WeakMap<HTMLElement, Root>();
 
 /**
  * Mounts the visibility app into the given element with the provided portal context.  This is the entry point for
@@ -29,8 +29,6 @@ let root: Root | null = null;
  * environment, and other contextual data.
  */
 export async function mount(el: HTMLElement, context: PortalContext) {
-  if (root) return;
-
   // TODO: make the building of the VisibilityContext dynamic
   const visibilityContext: VisibilityContext = {
     ...context,
@@ -41,9 +39,22 @@ export async function mount(el: HTMLElement, context: PortalContext) {
   // Load the CSS for this module
   loadCss(deriveCssUrl(import.meta.url, { removeHash: true })).catch(console.warn);
 
+  // Check if we already have a root for this element and need to re-mount
+  let root = rootRegistry.get(el);
+  if (root) {
+    console.warn('Re-mounting visibility with updated context');
+    root.render(
+      <VisibilityContextProvider value={visibilityContext}>
+        <App />
+      </VisibilityContextProvider>,
+    );
+    return root;
+  }
+
   // Create and render the React root
   root = createRoot(el);
-  root.render(
+  rootRegistry.set(el, root);
+  return root.render(
     <VisibilityContextProvider value={visibilityContext}>
       <App />
     </VisibilityContextProvider>,
@@ -54,7 +65,10 @@ export async function mount(el: HTMLElement, context: PortalContext) {
  * Unmounts the visibility app from the DOM. This is the entry point for unmounting this app from a host
  * application.
  */
-export function unmount() {
-  root?.unmount();
-  root = null;
+export function unmount(el?: HTMLElement) {
+  if (el) rootRegistry.get(el)?.unmount();
+}
+
+if (import.meta.env.DEV) {
+  console.debug('%c✨ Visibility shell loaded', 'color: #0066cc');
 }

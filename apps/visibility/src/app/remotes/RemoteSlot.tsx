@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { loadRemote } from './loadRemotes';
+import { loadRemoteWithRetry } from './loadRemotes';
 import { loadRemoteManifest } from './loadManifest';
 import { RemoteError } from './remoteError';
 import { useVisibilityContext } from '@fedex/context';
@@ -27,18 +27,21 @@ export function RemoteSlot({ remoteName }: { remoteName: string }) {
     (async () => {
       try {
         const manifest = await loadRemoteManifest();
-        if (cancelled) return;
 
-        const mod = await loadRemote(remoteName, manifest);
         if (cancelled) return;
+        const mod = await loadRemoteWithRetry(remoteName, manifest, visibilityContext, {
+          maxRetries: 1,
+          retryDelayMs: 1000,
+          timeoutMs: 10000,
+        });
 
+        if (cancelled) return;
         mod.mount(el, visibilityContext);
         cleanup = () => mod.unmount?.(el);
 
         setState({ status: 'mounted' });
       } catch (err: unknown) {
         if (cancelled) return;
-
         setState({
           status: 'error',
           error: {

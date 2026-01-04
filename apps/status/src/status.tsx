@@ -50,3 +50,10 @@ export function unmount() {
   root?.unmount();
   root = null;
 }
+
+if (import.meta.env.DEV) {
+  console.info(
+    '%c📊 Status Remote Loaded',
+    'background: #00aa00; color: white; padding: 4px 8px; border-radius: 3px; font-weight: bold;',
+  );
+}

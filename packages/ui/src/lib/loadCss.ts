@@ -72,7 +72,7 @@ export function deriveCssUrl(jsUrl: string, options?: { removeHash?: boolean }):
       // Match pattern: filename-[hash].mjs -> filename.css
       // This regex matches the last segment before the extension and removes hash
       // Supports various hash formats: abc123, a1b2c3d4, hash123, etc.
-      pathname = pathname.replace(/(-[a-z0-9]+)?\.m?js$/i, '.css');
+      pathname = pathname.replace(/(-[a-z0-9_]+)?\.m?js$/i, '.css');
     } else {
       // Keep the hash if present: filename-abc123.mjs -> filename-abc123.css
       pathname = pathname.replace(/\.m?js$/, '.css');

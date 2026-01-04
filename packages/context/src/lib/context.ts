@@ -22,4 +22,5 @@ export interface PortalContext {
 export interface VisibilityContext extends PortalContext {
   entitlements: string[];
   rollout: 'current' | 'next' | string;
+  featureFlags?: Record<string, boolean | string | number>;
 }
