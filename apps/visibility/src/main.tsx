@@ -1,4 +1,4 @@
-import { mount } from './app/mount';
+import { mount } from './visibility';
 
 /**
  * Entry point for the visibility application in development mode.
@@ -8,7 +8,7 @@ const el = document.getElementById('root');
 if (!el) throw new Error('Root element not found');
 
 // Mount the application with a mock context
-mount(el, {
+await mount(el, {
   // TODO: create a mockable context object via localstorage
   user: { id: 'dev', roles: ['developer'] },
   env: 'development',
