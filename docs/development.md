@@ -1138,6 +1138,22 @@ npx nx test ui
 
 **Pro Tip:** Don't skip cache with `--skip-nx-cache` unless debugging.
 
+___
+
+### Nx Caching
+
+#### Local Caching (Enabled by Default)
+
+Nx automatically caches task outputs locally:
+
+```bash
+# First run - executes fully
+npx nx build visibility
+
+# Second run - instant (from cache)
+npx nx build visibility
+```
+
 ---
 
 #### Scope E2E Tests
