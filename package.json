@@ -2,11 +2,17 @@
   "name": "@fedex/source",
   "version": "0.0.0",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "ci:build:shared": "BUILD_MODE=shared npx nx run-many -t build -p visibility status",
     "ci:build:standalone": "BUILD_MODE=standalone npx nx run-many -t build -p visibility status",
     "ci:build:all": "npm run ci:build:shared && npm run ci:build:standalone",
     "ci:precommit:all": "npx nx run-many -t lint typecheck test",
+    "docker:build:visibility": "docker build -t fedex/visibility:latest -f apps/visibility/Dockerfile .",
+    "docker:build:status": "docker build -t fedex/status:latest -f apps/status/Dockerfile .",
+    "docker:build:all": "npm run docker:build:visibility && npm run docker:build:status",
+    "docker:compose:up": "docker-compose up -d",
+    "docker:compose:down": "docker-compose down",
     "nx:graph": "nx graph",
     "nx:projects": "nx show projects",
     "nx:remove-project": "npx nx generate @nx/workspace:remove --",
@@ -15,7 +21,6 @@
     "precommit": "npx nx affected -t lint typecheck test --base=HEAD~1",
     "lint:fix": "npx nx affected -t lint --base=HEAD~1 --fix"
   },
-  "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",
     "@babel/preset-react": "^7.14.5",
@@ -61,7 +66,6 @@
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",
-    "verdaccio": "^6.0.5",
     "vite": "^7.0.0",
     "vite-plugin-dts": "~4.5.0",
     "vitest": "^4.0.0"
@@ -77,19 +81,7 @@
   },
   "dependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "nx": {
-    "includedScripts": [],
-    "targets": {
-      "local-registry": {
-        "executor": "@nx/js:verdaccio",
-        "options": {
-          "port": 4873,
-          "config": ".verdaccio/config.yml",
-          "storage": "tmp/local-registry/storage"
-        }
-      }
-    }
+    "react-dom": "^19.0.0",
+    "react-router-dom": "6.29.0"
   }
 }

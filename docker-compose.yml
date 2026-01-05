@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Visibility Shell (Host)
+  visibility:
+    build:
+      context: .
+      dockerfile: apps/visibility/Dockerfile
+    container_name: visibility-shell
+    ports:
+      - "8080:80"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    labels:
+      - "com.fedex.app=visibility"
+      - "com.fedex.type=shell"
+      - "com.fedex.version=2.0"
+
+  # Status Remote
+  status:
+    build:
+      context: .
+      dockerfile: apps/status/Dockerfile
+    container_name: status-remote
+    ports:
+      - "8081:80"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    labels:
+      - "com.fedex.app=status"
+      - "com.fedex.type=remote"
+      - "com.fedex.version=2.0"
+
+# Optional: Reverse proxy for local testing
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - visibility
+      - status
+    restart: unless-stopped
+    labels:
+      - "com.fedex.app=proxy"
+      - "com.fedex.type=gateway"
+
+volumes:
+  nginx-cache:
+

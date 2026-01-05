@@ -1,8 +1,10 @@
 import { defineConfig } from 'vitest/config';
 
+// Common server/host setup for dev and preview
 const hostSetup = {
   port: 4201,
   host: 'localhost',
+  cors: true,
 };
 
 // Determine build mode: 'shared' (React externalized) or 'standalone' (React bundled)

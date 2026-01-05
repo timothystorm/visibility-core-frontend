@@ -1,0 +1,16 @@
+node_modules
+dist
+.nx
+.git
+.github
+*.md
+*.log
+coverage
+.vscode
+.idea
+*.spec.ts
+*.spec.tsx
+e2e
+out-tsc
+tmp
+

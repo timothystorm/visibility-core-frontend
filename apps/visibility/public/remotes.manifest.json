@@ -3,10 +3,6 @@
     "status": {
       "current": "http://localhost:4202/status.mjs",
       "next": "http://localhost:4202/status.mjs"
-    },
-    "overview": {
-      "current": "http://localhost:4003/overview.mjs",
-      "next": "http://localhost:4003/overview.mjs"
     }
   }
 }

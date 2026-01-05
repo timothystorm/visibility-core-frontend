@@ -1032,10 +1032,38 @@ npx nx build visibility
 npx nx build status
 
 # Build both modes
-npm run ci:build:shared       # React external
-npm run ci:build:standalone   # React bundled
+npm run ci:build:shared       # Production (React external)
+npm run ci:build:standalone   # Fallback (React bundled)
 npm run ci:build:all          # Both modes
 ```
+
+#### Docker
+```bash
+# Build all Docker images
+npm run docker:build:all
+
+# Build visibility image
+npm run docker:build:visibility
+
+# Build status image
+npm run docker:build:status
+
+# Start with Docker Compose
+npm run docker:compose:up
+
+# Stop all containers
+npm run docker:compose:down
+```
+
+**Important:** nginx.conf MUST include MIME type configuration for `.mjs` files:
+```nginx
+types {
+    application/javascript js mjs;
+    text/css css;
+    application/json json;
+}
+```
+Without this, browsers will block module loading due to wrong MIME type.
 
 #### Testing
 ```bash
@@ -1240,11 +1268,29 @@ npm run ci:build:standalone   # Fallback (React bundled)
 npm run ci:build:all          # Both modes
 ```
 
+### Docker Commands
+```bash
+npm run docker:build:all             # Build all Docker images
+npm run docker:build:visibility      # Build visibility image
+npm run docker:build:status          # Build status image
+npm run docker:compose:up            # Start with Docker Compose
+npm run docker:compose:down          # Stop all containers
+```
+
 ### Test Commands
 ```bash
-npx nx run-many -t test           # All tests
-npx nx run-many -t typecheck      # Type checking
-npx nx test ui --coverage         # With coverage
+# Run all tests
+npx nx run-many -t test
+
+# Test specific project
+npx nx test ui
+npx nx test context
+
+# Test with coverage
+npx nx test ui --coverage
+
+# E2E tests
+npx nx e2e visibility-e2e
 ```
 
 ### Code Patterns
